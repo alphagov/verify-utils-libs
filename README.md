@@ -1,6 +1,8 @@
 
 # Verify Utils Libraries
 
+[![Build Status](https://travis-ci.org/alphagov/verify-utils-libs.svg?branch=master)](https://travis-ci.org/alphagov/verify-utils-libs)
+
 Libraries for performing various utility operations within Verify. These include:
 
 * Miscellaneous common utilities
