@@ -7,7 +7,6 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
@@ -42,8 +41,6 @@ public class TimeoutRequestRetryHandlerTest {
 
         assertTrue(expected);
 
-
-        timeoutRequestRetryHandler = new TimeoutRequestRetryHandler(numRetries);
         expected = timeoutRequestRetryHandler.retryRequest(new ConnectTimeoutException(), executionCount, httpContext);
 
         assertFalse(expected);
