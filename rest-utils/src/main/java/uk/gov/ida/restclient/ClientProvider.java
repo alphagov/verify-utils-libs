@@ -6,6 +6,7 @@ import io.dropwizard.setup.Environment;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.impl.client.StandardHttpRequestRetryHandler;
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
+import uk.gov.ida.configuration.JerseyClientWithRetryBackoffConfiguration;
 
 import javax.inject.Provider;
 import javax.ws.rs.client.Client;
@@ -32,7 +33,23 @@ public class ClientProvider implements Provider<Client> {
     private HttpRequestRetryHandler getHttpRequestRetryHandler(JerseyClientConfiguration jerseyClientConfiguration, boolean enableRetryTimeOutConnections) {
         HttpRequestRetryHandler retryHandler;
         if (enableRetryTimeOutConnections) {
-            retryHandler = new TimeoutRequestRetryHandler(jerseyClientConfiguration.getRetries());
+            if (jerseyClientConfiguration instanceof JerseyClientWithRetryBackoffConfiguration) {
+                JerseyClientWithRetryBackoffConfiguration clientConfig = (JerseyClientWithRetryBackoffConfiguration) jerseyClientConfiguration;
+                if (clientConfig.getRetryExceptionNames() == null) {
+                    retryHandler = new TimeoutRequestRetryWithBackoffHandler(
+                            jerseyClientConfiguration.getRetries(),
+                            clientConfig.getRetryBackoffPeriod()
+                    );
+                } else {
+                    retryHandler = new TimeoutRequestRetryWithBackoffHandler(
+                            jerseyClientConfiguration.getRetries(),
+                            clientConfig.getRetryBackoffPeriod(),
+                            clientConfig.getRetryExceptionNames()
+                    );
+                }
+            } else {
+                retryHandler = new TimeoutRequestRetryHandler(jerseyClientConfiguration.getRetries());
+            }
         } else {
             retryHandler = new StandardHttpRequestRetryHandler(0, false);
         }
