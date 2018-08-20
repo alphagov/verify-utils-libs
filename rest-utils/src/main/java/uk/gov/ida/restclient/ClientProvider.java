@@ -30,25 +30,44 @@ public class ClientProvider implements Provider<Client> {
         client = jerseyClientBuilder.build(clientName);
     }
 
+    public ClientProvider(
+            Environment environment,
+            JerseyClientWithRetryBackoffConfiguration jerseyClientConfiguration,
+            boolean enableRetryTimeOutConnections,
+            String clientName) {
+
+        JerseyClientBuilder jerseyClientBuilder = new JerseyClientBuilder(environment)
+                .using(jerseyClientConfiguration)
+                .using(getHttpRequestRetryHandler(jerseyClientConfiguration, enableRetryTimeOutConnections))
+                .using(new SystemDefaultRoutePlanner(ProxySelector.getDefault()));
+
+        client = jerseyClientBuilder.build(clientName);
+    }
+
     private HttpRequestRetryHandler getHttpRequestRetryHandler(JerseyClientConfiguration jerseyClientConfiguration, boolean enableRetryTimeOutConnections) {
         HttpRequestRetryHandler retryHandler;
         if (enableRetryTimeOutConnections) {
-            if (jerseyClientConfiguration instanceof JerseyClientWithRetryBackoffConfiguration) {
-                JerseyClientWithRetryBackoffConfiguration clientConfig = (JerseyClientWithRetryBackoffConfiguration) jerseyClientConfiguration;
-                if (clientConfig.getRetryExceptionNames() == null) {
-                    retryHandler = new TimeoutRequestRetryWithBackoffHandler(
-                            jerseyClientConfiguration.getRetries(),
-                            clientConfig.getRetryBackoffPeriod()
-                    );
-                } else {
-                    retryHandler = new TimeoutRequestRetryWithBackoffHandler(
-                            jerseyClientConfiguration.getRetries(),
-                            clientConfig.getRetryBackoffPeriod(),
-                            clientConfig.getRetryExceptionNames()
-                    );
-                }
+            retryHandler = new TimeoutRequestRetryHandler(jerseyClientConfiguration.getRetries());
+        } else {
+            retryHandler = new StandardHttpRequestRetryHandler(0, false);
+        }
+        return retryHandler;
+    }
+
+    private HttpRequestRetryHandler getHttpRequestRetryHandler(JerseyClientWithRetryBackoffConfiguration jerseyClientConfiguration, boolean enableRetryTimeOutConnections) {
+        HttpRequestRetryHandler retryHandler;
+        if (enableRetryTimeOutConnections) {
+            if (jerseyClientConfiguration.getRetryExceptionNames() == null) {
+                retryHandler = new TimeoutRequestRetryWithBackoffHandler(
+                        jerseyClientConfiguration.getRetries(),
+                        jerseyClientConfiguration.getRetryBackoffPeriod()
+                );
             } else {
-                retryHandler = new TimeoutRequestRetryHandler(jerseyClientConfiguration.getRetries());
+                retryHandler = new TimeoutRequestRetryWithBackoffHandler(
+                        jerseyClientConfiguration.getRetries(),
+                        jerseyClientConfiguration.getRetryBackoffPeriod(),
+                        jerseyClientConfiguration.getRetryExceptionNames()
+                );
             }
         } else {
             retryHandler = new StandardHttpRequestRetryHandler(0, false);
