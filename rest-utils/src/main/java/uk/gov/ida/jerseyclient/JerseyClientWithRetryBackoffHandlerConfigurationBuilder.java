@@ -18,7 +18,7 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
         return new JerseyClientWithRetryBackoffHandlerConfigurationBuilder();
     }
 
-    public JerseyClientConfiguration build() {
+    public JerseyClientWithRetryBackoffConfiguration build() {
         return new TestJerseyClientWithRetryBackoffConfiguration(
             1,
             128,
