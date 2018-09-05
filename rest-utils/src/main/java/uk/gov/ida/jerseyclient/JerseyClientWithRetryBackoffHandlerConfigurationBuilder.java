@@ -1,9 +1,7 @@
 package uk.gov.ida.jerseyclient;
 
-import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.util.Duration;
 import uk.gov.ida.configuration.JerseyClientWithRetryBackoffConfiguration;
-import uk.gov.ida.restclient.TimeoutRequestRetryWithBackoffHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,10 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
 
     private Duration timeout = Duration.microseconds(500);
     private Duration backOffPeriod = Duration.microseconds(500);
+    private Duration connectionTimeout = Duration.microseconds(500);
     private List<String> retryExceptions = new ArrayList<>();
+    private int retries = 0;
+    private boolean chunkedEncodingEnabled = false;
 
     public static JerseyClientWithRetryBackoffHandlerConfigurationBuilder aJerseyClientWithRetryBackoffHandlerConfiguration() {
         return new JerseyClientWithRetryBackoffHandlerConfigurationBuilder();
@@ -20,15 +21,17 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
 
     public JerseyClientWithRetryBackoffConfiguration build() {
         return new TestJerseyClientWithRetryBackoffConfiguration(
-            1,
-            128,
-            timeout,
-            Duration.microseconds(500),
-            Duration.hours(1),
-            1024,
-            1024,
-            backOffPeriod,
-            retryExceptions
+                1,
+                128,
+                timeout,
+                connectionTimeout,
+                Duration.hours(1),
+                1024,
+                1024,
+                retries,
+                backOffPeriod,
+                retryExceptions,
+                chunkedEncodingEnabled
         );
     }
 
@@ -47,6 +50,21 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
         return this;
     }
 
+    public JerseyClientWithRetryBackoffHandlerConfigurationBuilder withChunkedEncodingEnabled(boolean chunkedEncodingEnabled) {
+        this.chunkedEncodingEnabled = chunkedEncodingEnabled;
+        return this;
+    }
+
+    public JerseyClientWithRetryBackoffHandlerConfigurationBuilder withNumRetries(int numRetries) {
+        this.withNumRetries(numRetries);
+        return this;
+    }
+
+    public JerseyClientWithRetryBackoffHandlerConfigurationBuilder withConnectionTimeout(Duration connectionTimeout){
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
     private static class TestJerseyClientWithRetryBackoffConfiguration extends JerseyClientWithRetryBackoffConfiguration {
         private TestJerseyClientWithRetryBackoffConfiguration(
                 int minThreads,
@@ -57,8 +75,10 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
                 Duration timeToLive,
                 int maxConnections,
                 int maxConnectionsPerRoute,
+                int numRetries,
                 Duration retryBackoffPeriod,
-                List<String> exceptionNames) {
+                List<String> exceptionNames,
+                boolean chunkedEncodingEnabled) {
 
             setMinThreads(minThreads);
             setMaxThreads(maxThreads);
@@ -70,6 +90,8 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
             setMaxConnectionsPerRoute(maxConnectionsPerRoute);
             setRetryBackoffPeriod(retryBackoffPeriod);
             setRetryExceptionNames(exceptionNames);
+            setChunkedEncodingEnabled(chunkedEncodingEnabled);
+            setRetries(numRetries);
         }
     }
 }
