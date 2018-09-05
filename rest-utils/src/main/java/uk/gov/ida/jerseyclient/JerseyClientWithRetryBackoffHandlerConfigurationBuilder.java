@@ -12,7 +12,7 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
     private Duration backOffPeriod = Duration.microseconds(500);
     private Duration connectionTimeout = Duration.microseconds(500);
     private List<String> retryExceptions = new ArrayList<>();
-    private int retries = 0;
+    private int numRetries = 0;
     private boolean chunkedEncodingEnabled = false;
 
     public static JerseyClientWithRetryBackoffHandlerConfigurationBuilder aJerseyClientWithRetryBackoffHandlerConfiguration() {
@@ -28,7 +28,7 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
                 Duration.hours(1),
                 1024,
                 1024,
-                retries,
+                numRetries,
                 backOffPeriod,
                 retryExceptions,
                 chunkedEncodingEnabled
@@ -56,7 +56,7 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
     }
 
     public JerseyClientWithRetryBackoffHandlerConfigurationBuilder withNumRetries(int numRetries) {
-        this.withNumRetries(numRetries);
+        this.numRetries = numRetries;
         return this;
     }
 
@@ -69,7 +69,6 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
         private TestJerseyClientWithRetryBackoffConfiguration(
                 int minThreads,
                 int maxThreads,
-
                 Duration timeout,
                 Duration connectionTimeout,
                 Duration timeToLive,
@@ -82,7 +81,6 @@ public class JerseyClientWithRetryBackoffHandlerConfigurationBuilder {
 
             setMinThreads(minThreads);
             setMaxThreads(maxThreads);
-
             setTimeout(timeout);
             setConnectionTimeout(connectionTimeout);
             setTimeToLive(timeToLive);
