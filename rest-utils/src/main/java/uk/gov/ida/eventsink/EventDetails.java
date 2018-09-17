@@ -1,5 +1,7 @@
 package uk.gov.ida.eventsink;
 
+import uk.gov.ida.eventemitter.EventDetailsKey;
+
 public class EventDetails {
 
     private final EventDetailsKey key;
