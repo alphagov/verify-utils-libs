@@ -91,8 +91,8 @@ public class ErrorHandlingClientTest {
     }
 
     @Test(expected = ApplicationException.class)
-    public void shouldRetryPostRequestIfConfigured() throws Exception {
-        when(webTargetBuilder.post(Entity.json(""))).thenThrow(Exception.class);
+    public void shouldRetryPostRequestIfConfigured() {
+        when(webTargetBuilder.post(Entity.json(""))).thenThrow(ProcessingException.class);
 
         ErrorHandlingClient retryEnabledErrorHandlingClient = new ErrorHandlingClient(client, 2);
         retryEnabledErrorHandlingClient.post(testUri, Collections.emptyMap(), "");
@@ -101,8 +101,8 @@ public class ErrorHandlingClientTest {
     }
 
     @Test(expected = ApplicationException.class)
-    public void shouldRetryGetRequestIfConfigured() throws Exception {
-        when(webTargetBuilder.get()).thenThrow(Exception.class);
+    public void shouldRetryGetRequestIfConfigured() {
+        when(webTargetBuilder.get()).thenThrow(ProcessingException.class);
 
         ErrorHandlingClient retryEnabledErrorHandlingClient = new ErrorHandlingClient(client, 2);
         retryEnabledErrorHandlingClient.get(testUri);

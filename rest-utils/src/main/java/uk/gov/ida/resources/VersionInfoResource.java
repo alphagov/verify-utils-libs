@@ -11,7 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -31,10 +30,10 @@ public class VersionInfoResource {
     }
 
     private Attributes getManifest() {
-        URLClassLoader cl = (URLClassLoader) getClass().getClassLoader();
+        ClassLoader cl = getClass().getClassLoader();
         Manifest manifest;
         try {
-            URL url = cl.findResource("META-INF/MANIFEST.MF");
+            URL url = cl.getResource("META-INF/MANIFEST.MF");
             manifest = new Manifest(url.openStream());
         } catch (IOException e) {
             throw Throwables.propagate(e);
