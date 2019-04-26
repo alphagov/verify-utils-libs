@@ -8,8 +8,8 @@ apply plugin: 'java'
 
 idea {
     project {
-        jdkName = '1.8'
-        languageLevel = '1.8'
+        jdkName = '11'
+        languageLevel = '11'
     }
     module {
         //if you love browsing Javadoc
