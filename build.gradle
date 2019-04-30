@@ -64,7 +64,7 @@ subprojects {
         repositories {
             mavenLocal()
             maven {
-                url "/srv/maven" // change to point to your repo, e.g. http://my.org/repo
+                url "https://artifactory.ida.digital.cabinet-office.gov.uk/artifactory/whitelisted-repos"
             }
         }
     }
