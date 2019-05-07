@@ -9,7 +9,7 @@ apply plugin: 'java'
 idea {
     project {
         jdkName = '11'
-        languageLevel = '11'
+        languageLevel = '8'
     }
     module {
         //if you love browsing Javadoc
@@ -21,6 +21,11 @@ idea {
 }
 
 subprojects {
+    configurations.all {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'maven-publish'
