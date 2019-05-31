@@ -1,6 +1,5 @@
 package uk.gov.ida.common.shared.configuration;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
