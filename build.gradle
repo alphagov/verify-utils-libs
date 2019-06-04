@@ -5,6 +5,13 @@ plugins {
 apply plugin: 'idea'
 apply plugin: 'java'
 
+allprojects {
+    apply plugin: 'jacoco'
+}
+
+repositories {
+    jcenter()
+}
 
 idea {
     project {
@@ -76,6 +83,29 @@ subprojects {
                 url "https://artifactory.ida.digital.cabinet-office.gov.uk/artifactory/libs-release-local"
             }
         }
+    }
+}
+
+task jacocoMerge(type: JacocoMerge) {
+    destinationFile = file("$buildDir/jacoco/allTestCoverage.exec")
+    executionData = project.fileTree(dir: '.', include:'**/build/jacoco/*est.exec')
+    jacocoClasspath = project.files(project.configurations.jacocoAnt)
+}
+
+task jacocoRootReport(type: JacocoReport) {
+    dependsOn jacocoMerge
+
+    additionalSourceDirs files(subprojects.sourceSets.main.allSource.srcDirs)
+    additionalClassDirs files(subprojects.sourceSets.main.output)
+    executionData jacocoMerge.destinationFile
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+
+    doFirst {
+        executionData files(executionData.findAll { it.exists() })
     }
 }
 
