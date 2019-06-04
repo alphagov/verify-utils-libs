@@ -8,7 +8,6 @@ import java.net.URI;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.fromNullable;
 import static java.text.MessageFormat.format;
 

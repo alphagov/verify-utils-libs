@@ -1,7 +1,6 @@
 package uk.gov.ida.shared.utils.xml;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.xml.sax.SAXParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;

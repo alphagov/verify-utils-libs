@@ -24,7 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ida.configuration.AnalyticsConfiguration;
 import uk.gov.ida.configuration.AnalyticsConfigurationBuilder;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Cookie;
 import java.net.MalformedURLException;
 import java.net.URI;
