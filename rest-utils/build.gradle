@@ -18,7 +18,7 @@ dependencies {
             "javax.ws.rs:javax.ws.rs-api:2.0.1",
             "uk.gov.ida:dropwizard-logstash:1.3.5-68",
             "org.apache.commons:commons-lang3:3.3.2",
-            "uk.gov.ida:verify-event-emitter:0.0.1-58",
+            "uk.gov.ida:verify-event-emitter:0.0.1-66",
             "javax.xml.bind:jaxb-api:2.3.1"
 }
 
