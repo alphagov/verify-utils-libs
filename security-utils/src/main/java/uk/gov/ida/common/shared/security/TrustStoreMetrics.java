@@ -20,13 +20,18 @@ public class TrustStoreMetrics {
     /**
      * Create a new TrustStoreMetrics.  This will automatically register metrics with the default Prometheus
      * CollectorRegistry.
+     * @param gaugeName
+     *  The name of the Prometheus Label to be used
      */
     public TrustStoreMetrics() {
-        expiryDateGauge = Gauge.build("verify_trust_store_certificate_expiry_date", "Expiry date (in unix time milliseconds) of a certificate in a Java truststore")
+        this("verify_trust_store_certificate_expiry_date");
+    }
+
+    public TrustStoreMetrics(String gaugeName) {
+        expiryDateGauge = Gauge.build(gaugeName, "Expiry date (in unix time milliseconds) of a certificate in a Java truststore")
                 .labelNames("truststore", "subject", "serial")
                 .register();
     }
-
     /**
      * Captures metrics for the certificates in a truststore.
      * @param name
