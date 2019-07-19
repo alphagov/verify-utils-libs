@@ -25,6 +25,6 @@ public class LoggingBundle implements ConfiguredBundle<ServiceNameConfiguration>
         // Add service-name to context for easy search in kibana
         context.putProperty("service-name", configuration.getServiceName());
         environment.servlets().addFilter("fresh-mdc-filter", ClearMdcAfterRequestFilter.class)
-                .addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+                .addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
     }
 }
