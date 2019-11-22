@@ -8,8 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-import static com.google.common.base.Throwables.propagate;
-
 public class HmacDigest {
 
     private final HmacSha256MacFactory hmacSha256MacFactory;
@@ -26,20 +24,20 @@ public class HmacDigest {
         try {
             mac = hmacSha256MacFactory.getInstance();
         } catch (NoSuchAlgorithmException e) {
-            throw propagate(e);
+            throw new RuntimeException(e);
         }
 
         try {
             mac.init(secureCookieKeyStore.getKey());
         } catch (InvalidKeyException e) {
-            throw propagate(e);
+            throw new RuntimeException(e);
         }
 
         byte[] bytes;
         try {
             bytes = mac.doFinal(toEncode.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            throw propagate(e);
+            throw new RuntimeException(e);
         }
 
         return StringEncoding.toBase64Encoded(bytes);

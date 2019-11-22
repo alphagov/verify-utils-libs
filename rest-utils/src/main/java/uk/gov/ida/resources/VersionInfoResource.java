@@ -1,7 +1,5 @@
 package uk.gov.ida.resources;
 
-
-import com.google.common.base.Throwables;
 import uk.gov.ida.common.CommonUrls;
 import uk.gov.ida.common.VersionInfoDto;
 
@@ -36,7 +34,7 @@ public class VersionInfoResource {
             URL url = cl.getResource("META-INF/MANIFEST.MF");
             manifest = new Manifest(url.openStream());
         } catch (IOException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
         return manifest.getMainAttributes();
     }

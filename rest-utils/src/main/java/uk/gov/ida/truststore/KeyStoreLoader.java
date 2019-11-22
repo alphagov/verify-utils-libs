@@ -1,7 +1,5 @@
 package uk.gov.ida.truststore;
 
-import com.google.common.base.Throwables;
-
 import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,7 +29,7 @@ public class KeyStoreLoader {
             }
             return keyStore;
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 }

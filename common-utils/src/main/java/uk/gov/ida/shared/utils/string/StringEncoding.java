@@ -1,6 +1,5 @@
 package uk.gov.ida.shared.utils.string;
 
-import com.google.common.base.Throwables;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.UnsupportedEncodingException;
@@ -35,7 +34,7 @@ public abstract class StringEncoding {
         try {
             encodedValue = URLEncoder.encode(input, ENCODING);
         } catch (UnsupportedEncodingException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
         return encodedValue;
     }
@@ -45,7 +44,7 @@ public abstract class StringEncoding {
         try {
             decodedValue = URLDecoder.decode(input, ENCODING);
         } catch (UnsupportedEncodingException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
         return decodedValue;
     }

@@ -1,6 +1,5 @@
 package uk.gov.ida.restclient;
 
-import com.google.common.base.Throwables;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
@@ -32,7 +31,7 @@ public abstract class SecureSSLSchemeRegistryBuilder {
             sslContext.init(null, trustManagers, SECURE_RANDOM);
         } catch (KeyManagementException e){
             LOG.error("Error when trying to create SSL.", e);
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
 
         final Scheme https = new Scheme("https", 443, new SSLSocketFactory(sslContext, hostnameVerifier));
@@ -49,7 +48,7 @@ public abstract class SecureSSLSchemeRegistryBuilder {
             trustManagerFactory.init(trustStore);
             return trustManagerFactory.getTrustManagers();
         } catch (NoSuchAlgorithmException | KeyStoreException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 }
