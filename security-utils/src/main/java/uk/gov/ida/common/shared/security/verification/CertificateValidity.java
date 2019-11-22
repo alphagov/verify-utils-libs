@@ -1,30 +1,29 @@
 package uk.gov.ida.common.shared.security.verification;
 
-import com.google.common.base.Optional;
-
 import java.security.cert.CertPathValidatorException;
+import java.util.Optional;
 
 public class CertificateValidity {
-    private final Optional<CertPathValidatorException> exception;
+    private final CertPathValidatorException exception;
 
     public static CertificateValidity valid() {
-        return new CertificateValidity(Optional.<CertPathValidatorException>absent());
+        return new CertificateValidity(null);
     }
 
     public static CertificateValidity invalid(CertPathValidatorException e) {
-        return new CertificateValidity(Optional.of(e));
+        return new CertificateValidity(e);
     }
 
-    private CertificateValidity(Optional<CertPathValidatorException> exception) {
+    private CertificateValidity(CertPathValidatorException exception) {
         this.exception = exception;
     }
 
     public boolean isValid() {
-        return !exception.isPresent();
+        return exception == null;
     }
 
     public Optional<CertPathValidatorException> getException() {
-        return exception;
+        return Optional.ofNullable(exception);
     }
 
 }

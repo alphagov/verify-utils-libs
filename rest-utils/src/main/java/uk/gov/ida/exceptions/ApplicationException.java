@@ -1,14 +1,13 @@
 package uk.gov.ida.exceptions;
 
-import com.google.common.base.Optional;
 import uk.gov.ida.common.ErrorStatusDto;
 import uk.gov.ida.common.ExceptionType;
 
 import java.net.URI;
 import java.text.MessageFormat;
+import java.util.Optional;
 import java.util.UUID;
 
-import static com.google.common.base.Optional.fromNullable;
 import static java.text.MessageFormat.format;
 
 public final class ApplicationException extends RuntimeException {
@@ -25,7 +24,7 @@ public final class ApplicationException extends RuntimeException {
             boolean audited,
             UUID errorId) {
 
-        this(exceptionType, audited, errorId, null, Optional.<URI>absent(), Optional.<String>absent());
+        this(exceptionType, audited, errorId, null, Optional.empty(), Optional.empty());
     }
 
     private ApplicationException(
@@ -34,7 +33,7 @@ public final class ApplicationException extends RuntimeException {
             UUID errorId,
             Throwable cause) {
 
-        this(exceptionType, audited, errorId, cause, Optional.<URI>absent(), Optional.<String>absent());
+        this(exceptionType, audited, errorId, cause, Optional.empty(), Optional.empty());
     }
 
     private ApplicationException(
@@ -70,8 +69,8 @@ public final class ApplicationException extends RuntimeException {
                 errorStatus.isAudited(),
                 errorStatus.getErrorId(),
                 null,
-                fromNullable(uri),
-                fromNullable(errorStatus.getClientMessage())
+                Optional.ofNullable(uri),
+                Optional.ofNullable(errorStatus.getClientMessage())
         );
     }
 
@@ -80,11 +79,11 @@ public final class ApplicationException extends RuntimeException {
     }
 
     public static ApplicationException createUnauditedException(ExceptionType exceptionType, String message, Throwable cause) {
-        return new ApplicationException(exceptionType, false, UUID.randomUUID(), cause, Optional.<URI>absent(), Optional.of(message));
+        return new ApplicationException(exceptionType, false, UUID.randomUUID(), cause, Optional.empty(), Optional.of(message));
     }
 
     public static ApplicationException createUnauditedException(ExceptionType exceptionType, UUID errorId, Throwable cause, URI uri) {
-        return new ApplicationException(exceptionType, false, errorId, cause, fromNullable(uri), Optional.<String>absent());
+        return new ApplicationException(exceptionType, false, errorId, cause, Optional.ofNullable(uri), Optional.empty());
     }
 
     public static ApplicationException createUnauditedException(ExceptionType exceptionType, UUID errorId, Throwable cause) {
@@ -96,7 +95,7 @@ public final class ApplicationException extends RuntimeException {
     }
 
     public static ApplicationException createUnauditedException(ExceptionType exceptionType, UUID errorId, URI uri) {
-        return new ApplicationException(exceptionType, false, errorId, null, fromNullable(uri), Optional.<String>absent());
+        return new ApplicationException(exceptionType, false, errorId, null, Optional.ofNullable(uri), Optional.empty());
     }
 
     public static ApplicationException createExceptionFromErrorStatusDto(ErrorStatusDto errorStatusDto, final URI uri) {
