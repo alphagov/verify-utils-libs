@@ -19,3 +19,5 @@ configuration/local
 configuration/vagrant/
 jmeter/*errors*.csv
 *.swp
+/common-utils/out/
+/rest-utils/out/
