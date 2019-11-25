@@ -1,6 +1,5 @@
 package uk.gov.ida.common.shared.security;
 
-import com.google.common.base.Throwables;
 import uk.gov.ida.common.shared.configuration.KeyConfiguration;
 import uk.gov.ida.common.shared.configuration.SecureCookieKeyConfiguration;
 import uk.gov.ida.common.shared.configuration.SecureCookieKeyStore;
@@ -30,7 +29,7 @@ public class SecureCookieKeyConfigurationKeyStore implements SecureCookieKeyStor
         try {
             return getSecureCookieKey(keyUri);
         } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 

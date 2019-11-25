@@ -1,7 +1,5 @@
 package uk.gov.ida.common.shared.security;
 
-import com.google.common.base.Throwables;
-
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -19,7 +17,7 @@ public class PrivateKeyFactory {
             keyFactory = KeyFactory.getInstance("RSA");
             return keyFactory.generatePrivate(keySpec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
 
     }

@@ -1,6 +1,5 @@
 package uk.gov.ida.restclient;
 
-import com.google.common.base.Throwables;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -25,7 +24,7 @@ public abstract class InsecureSSLSchemeRegistryBuilder {
             sslContext.init(null, trustManagers, null);
         } catch (KeyManagementException e){
             LOG.error("Error when trying to create SSL.", e);
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
 
         final Scheme http = new Scheme("http", 80, new PlainSocketFactory());

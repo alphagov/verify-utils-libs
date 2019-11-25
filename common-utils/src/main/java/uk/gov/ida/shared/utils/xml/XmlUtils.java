@@ -1,6 +1,5 @@
 package uk.gov.ida.shared.utils.xml;
 
-import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
-import static com.google.common.base.Throwables.propagate;
 import static javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING;
 
 /**
@@ -45,7 +43,7 @@ public abstract class XmlUtils {
             return docWriter.toString();
         } catch (TransformerException ex) {
             LOG.error("Unable to convert Element to String", ex);
-            throw Throwables.propagate(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -57,7 +55,7 @@ public abstract class XmlUtils {
         try {
             return newDocumentBuilder().parse(new ByteArrayInputStream(xmlString.getBytes(StandardCharsets.UTF_8)));
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw propagate(e);
+            throw new RuntimeException(e);
         }
     }
 

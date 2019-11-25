@@ -6,8 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import static com.google.common.base.Throwables.propagate;
-
 public class PublicKeyFileInputStreamFactory implements PublicKeyInputStreamFactory {
 
     @Inject
@@ -17,7 +15,7 @@ public class PublicKeyFileInputStreamFactory implements PublicKeyInputStreamFact
         try {
             return new FileInputStream(new File(publicKeyUri));
         } catch (FileNotFoundException e) {
-            throw propagate(e);
+            throw new RuntimeException(e);
         }
     }
 }

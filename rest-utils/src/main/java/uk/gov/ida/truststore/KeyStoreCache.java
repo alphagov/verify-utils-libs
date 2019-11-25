@@ -1,7 +1,5 @@
 package uk.gov.ida.truststore;
 
-
-import com.google.common.base.Throwables;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
@@ -36,7 +34,7 @@ public class KeyStoreCache {
                 }
             });
         } catch (ExecutionException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 
