@@ -34,6 +34,10 @@ public class JsonClient {
         return responseProcessor.getJsonEntity(uri, null, clazz, errorHandlingClient.get(uri));
     }
 
+    public <T> T get(URI uri, Class<T> clazz, Map<String, String> headers) {
+        return responseProcessor.getJsonEntity(uri, null, clazz, errorHandlingClient.get(uri, headers));
+    }
+
     public <T> T get(URI uri, Class<T> clazz, List<Cookie> cookies, Map<String, String> headers) {
         return responseProcessor.getJsonEntity(uri, null, clazz, errorHandlingClient.get(uri, cookies, headers));
     }
