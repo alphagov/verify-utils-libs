@@ -54,6 +54,19 @@ public class ErrorHandlingClientTest {
     }
 
     @Test
+    public void getWithHeadersShouldAddHeadersToRequest() {
+        String headerName = "X-Sausages";
+        String headerValue = "Yes please";
+        final Map<String, String> headers = ImmutableMap.of(headerName, headerValue);
+
+        errorHandlingClient.get(testUri, headers);
+
+        verify(webTargetBuilder, times(1)).header(headerName, headerValue);
+        verify(webTargetBuilder, times(1)).get();
+        verify(webTargetBuilder, never()).cookie(any(Cookie.class));
+    }
+
+    @Test
     public void getWithCookiesAndHeaders_shouldAddCookiesAndHeadersToRequest() throws Exception {
         final Cookie cookie = new Cookie("cookie", "monster");
         final List<Cookie> cookies = ImmutableList.of(cookie);

@@ -1,5 +1,6 @@
 package uk.gov.ida.jerseyclient;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.util.Map;
 
 import static org.mockito.Mockito.*;
 
@@ -56,6 +58,17 @@ public class JsonClientTest {
         jsonClient.get(testUri, String.class);
 
         verify(jsonResponseProcessor, times(1)).getJsonEntity(testUri, null, String.class, clientResponse);
+    }
+
+    @Test
+    public void getWithHeadersShouldPassHeadersToErrorHandlingClient() {
+        String headerName = "X-Sausages";
+        String headerValue = "Yes please";
+        final Map<String, String> headers = ImmutableMap.of(headerName, headerValue);
+
+        jsonClient.get(testUri, String.class, headers);
+
+        verify(errorHandlingClient).get(testUri, headers);
     }
 
     @Test
