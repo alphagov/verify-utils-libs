@@ -2,6 +2,7 @@ package uk.gov.ida.jerseyclient;
 
 import com.codahale.metrics.Meter;
 import org.junit.Test;
+import uk.gov.ida.common.ThreadSleepExponentialBackOffProvider;
 
 import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.NotAuthorizedException;
@@ -132,5 +133,27 @@ public class RetryCommandTest {
         String result = retryCommand.execute(dummy::function);
 
         assertThat(result).isEqualTo("SUCCESS");
+    }
+
+    @Test
+    public void shouldInvokeExponentialBackOffProviderWhenRunningExecuteWithExponentialBackoff() {
+        RetryCommand<String> retryCommand = new RetryCommand<>(3);
+
+        DummyClass dummy = mock(DummyClass.class);
+        when(dummy.function())
+                .thenThrow(NotAllowedException.class)
+                .thenThrow(NotAllowedException.class)
+                .thenThrow(NotAllowedException.class);
+        ThreadSleepExponentialBackOffProvider dummyBackOffProvider = mock(ThreadSleepExponentialBackOffProvider.class);
+        try {
+            doNothing().when(dummyBackOffProvider).backOffWait(anyInt());
+            String result = retryCommand.executeWithExponentialBackOff(dummy::function, dummyBackOffProvider);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(ProcessingException.class);
+            try {
+                verify(dummyBackOffProvider, times(3)).backOffWait(anyInt());
+            } catch (Exception ex) {
+            }
+        }
     }
 }

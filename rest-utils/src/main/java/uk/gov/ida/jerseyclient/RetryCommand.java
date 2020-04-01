@@ -3,6 +3,7 @@ package uk.gov.ida.jerseyclient;
 import com.codahale.metrics.Meter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.ida.common.ThreadSleepExponentialBackOffProvider;
 
 import javax.ws.rs.ProcessingException;
 import java.util.function.Supplier;
@@ -42,16 +43,46 @@ public class RetryCommand<T> {
             return function.get();
         } catch (Exception e) {
             if(!exceptionClass.isInstance(e)) throw e;
-            if(retryCounter >= maxRetries) return failAndStopRetry(e, function);
-
-            if(retryCounter == 0) { logInitialFail(e, function); }
-            else { logRetryFail(e, function); }
-
-            retryCounter++;
-            if(retryMeter != null) retryMeter.mark();
-
+            if (shouldStopRetrying(function, e)) {
+                return failAndStopRetry(e, function);
+            }
+            incrementRetries();
             return execute(function);
         }
+    }
+
+    public T executeWithExponentialBackOff(Supplier<T> function, ThreadSleepExponentialBackOffProvider backOffProvider) {
+        try {
+            return function.get();
+        } catch (Exception e) {
+            if(!exceptionClass.isInstance(e)) throw e;
+            if (shouldStopRetrying((Supplier<T>) function, e)) {
+                return failAndStopRetry(e, function);
+            }
+            incrementRetries();
+            try {
+                backOffProvider.backOffWait(retryCounter);
+            } catch (InterruptedException ex) {
+                LOG.error(ex.getMessage());
+            }
+            return executeWithExponentialBackOff(function, backOffProvider);
+        }
+    }
+
+    private boolean shouldStopRetrying(Supplier<T> function, Exception e) {
+        if (retryCounter >= maxRetries) return true;
+
+        if (retryCounter == 0) {
+            logInitialFail(e, function);
+        } else {
+            logRetryFail(e, function);
+        }
+        return false;
+    }
+
+    private void incrementRetries() {
+        retryCounter++;
+        if (retryMeter != null) retryMeter.mark();
     }
 
     private void logRetryFail(Exception e, Supplier<T> function) {
