@@ -9,15 +9,19 @@ import java.security.spec.PKCS8EncodedKeySpec;
 
 public class PrivateKeyFactory {
 
-    public PrivateKey createPrivateKey(byte[] privateKeyBytes) {
-        KeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-        KeyFactory keyFactory;
+    public PrivateKey createPrivateKey(byte[] cert) {
+        KeySpec keySpec = new PKCS8EncodedKeySpec(cert);
 
         try {
-            keyFactory = KeyFactory.getInstance("RSA");
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             return keyFactory.generatePrivate(keySpec);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException rsaE) {
+            try {
+                KeyFactory keyFactory = KeyFactory.getInstance("EC");
+                return keyFactory.generatePrivate(keySpec);
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException ecE) {
+                throw new RuntimeException(rsaE);
+            }
         }
 
     }
