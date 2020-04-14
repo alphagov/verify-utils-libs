@@ -2,7 +2,7 @@ plugins { id "com.jfrog.bintray" version "1.8.4" }
 
 dependencies {
     def dependencyVersions = [
-            dropwizardVersion:"1.3.20"
+            dropwizardVersion:"1.3.22"
     ]
 
     testCompile "junit:junit:4.12",
@@ -16,7 +16,7 @@ dependencies {
             "io.dropwizard:dropwizard-core:$dependencyVersions.dropwizardVersion",
             "io.dropwizard:dropwizard-client:$dependencyVersions.dropwizardVersion",
             "javax.ws.rs:javax.ws.rs-api:2.0.1",
-            "uk.gov.ida:dropwizard-logstash:1.3.20-85",
+            "uk.gov.ida:dropwizard-logstash:1.3.22-86",
             "org.apache.commons:commons-lang3:3.3.2",
             "javax.xml.bind:jaxb-api:2.3.1"
 }
