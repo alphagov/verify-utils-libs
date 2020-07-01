@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import uk.gov.ida.configuration.ServiceStatus;
 
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
 
 public class SetServiceUnavailableTask extends Task {
     private static final Logger LOG = LoggerFactory.getLogger(SetServiceUnavailableTask.class);
@@ -20,7 +22,7 @@ public class SetServiceUnavailableTask extends Task {
     }
 
     @Override
-    public void execute(final ImmutableMultimap<String, String> parameters, final PrintWriter output) throws Exception {
+    public void execute(Map<String, List<String>> parameters, PrintWriter output) throws Exception {
         LOG.info("Setting service status to unavailable");
         serviceStatus.setServiceStatus(false);
     }
