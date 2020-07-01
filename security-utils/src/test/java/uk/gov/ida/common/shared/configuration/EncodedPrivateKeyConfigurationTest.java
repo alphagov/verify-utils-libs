@@ -3,6 +3,7 @@ package uk.gov.ida.common.shared.configuration;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.google.common.io.Resources;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,20 +31,20 @@ public class EncodedPrivateKeyConfigurationTest {
 
     @Test
     public void should_ThrowExceptionWhenKeyIsNotBase64() throws Exception {
-        thrown.expect(InvalidDefinitionException.class);
+        thrown.expect(ValueInstantiationException.class);
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false).readValue("{\"type\": \"encoded\", \"key\": \"not-a-key\"}", PrivateKeyConfiguration.class);
     }
 
     @Test
     public void should_ThrowExceptionWhenKeyIsNotAValidKey() throws Exception {
-        thrown.expect(InvalidDefinitionException.class);
+        thrown.expect(ValueInstantiationException.class);
         thrown.expectMessage("InvalidKeySpecException");
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false).readValue("{\"type\": \"encoded\", \"key\": \"dGVzdAo=\"}", PrivateKeyConfiguration.class);
     }
 
-    @Test(expected = InvalidDefinitionException.class)
+    @Test(expected = ValueInstantiationException.class)
     public void should_throwAnExceptionWhenIncorrectFieldSpecified() throws Exception {
         objectMapper.readValue("{\"privateKeyFoo\": \"" + "foobar" + "\"}", PrivateKeyConfiguration.class);
     }

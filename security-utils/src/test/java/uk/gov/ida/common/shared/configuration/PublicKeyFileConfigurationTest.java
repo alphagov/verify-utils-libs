@@ -2,6 +2,7 @@ package uk.gov.ida.common.shared.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -42,21 +43,21 @@ public class PublicKeyFileConfigurationTest {
 
     @Test
     public void should_ThrowExceptionWhenFileDoesNotExist() throws Exception {
-        thrown.expect(InvalidDefinitionException.class);
+        thrown.expect(ValueInstantiationException.class);
         thrown.expectMessage("NoSuchFileException");
         objectMapper.readValue("{\"type\": \"file\", \"cert\": \"/foo/bar\", \"name\": \"someId\"}", DeserializablePublicKeyConfiguration.class);
     }
 
     @Test
     public void should_ThrowExceptionWhenFileDoesNotContainAPublicKey() throws Exception {
-        thrown.expect(InvalidDefinitionException.class);
+        thrown.expect(ValueInstantiationException.class);
         thrown.expectMessage("Unable to load certificate");
 
         String path = getClass().getClassLoader().getResource("empty_file").getPath();
         objectMapper.readValue("{\"type\": \"file\", \"cert\": \"" + path + "\", \"name\": \"someId\"}", DeserializablePublicKeyConfiguration.class);
     }
 
-    @Test(expected = InvalidDefinitionException.class)
+    @Test(expected = ValueInstantiationException.class)
     public void should_ThrowExceptionWhenIncorrectKeySpecified() throws Exception {
         String path = getClass().getClassLoader().getResource("empty_file").getPath();
         objectMapper.readValue("{\"type\": \"file\", \"certFoo\": \"" + path + "\", \"name\": \"someId\"}", DeserializablePublicKeyConfiguration.class);

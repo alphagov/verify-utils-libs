@@ -2,6 +2,7 @@ package uk.gov.ida.common.shared.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.google.common.io.Resources;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class EncodedCertificateConfigurationTest {
 
     @Test
     public void should_ThrowExceptionWhenStringDoesNotContainAPublicKey() throws Exception {
-        thrown.expect(InvalidDefinitionException.class);
+        thrown.expect(ValueInstantiationException.class);
         thrown.expectMessage("Unable to load certificate");
         String path = Resources.getResource("private_key.pk8").getFile();
         byte[] key = Files.readAllBytes(new File(path).toPath());
@@ -41,12 +42,12 @@ public class EncodedCertificateConfigurationTest {
 
     @Test
     public void should_ThrowExceptionWhenStringIsNotBase64Encoded() throws Exception {
-        thrown.expect(InvalidDefinitionException.class);
+        thrown.expect(ValueInstantiationException.class);
 
         objectMapper.readValue("{\"type\": \"encoded\", \"cert\": \"" + "FOOBARBAZ" + "\", \"name\": \"someId\"}", DeserializablePublicKeyConfiguration.class);
     }
 
-    @Test(expected = InvalidDefinitionException.class)
+    @Test(expected = ValueInstantiationException.class)
     public void should_ThrowExceptionWhenIncorrectKeySpecified() throws Exception {
         String path = getClass().getClassLoader().getResource("empty_file").getPath();
         String jsonConfig = "{\"type\": \"encoded\", \"certFoo\": \"" + path + "\", \"name\": \"someId\"}";
