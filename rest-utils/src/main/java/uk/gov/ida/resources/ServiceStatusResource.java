@@ -5,9 +5,9 @@ import org.apache.http.HttpStatus;
 import uk.gov.ida.common.CommonUrls;
 import uk.gov.ida.configuration.ServiceStatus;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
 
 @Path(CommonUrls.SERVICE_STATUS)
 public class ServiceStatusResource {

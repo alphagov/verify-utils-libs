@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import uk.gov.ida.configuration.AnalyticsConfiguration;
 
 import javax.inject.Inject;
-import javax.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.Cookie;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
