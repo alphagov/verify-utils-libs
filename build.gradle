@@ -16,7 +16,7 @@ repositories {
 idea {
     project {
         jdkName = '11'
-        languageLevel = '8'
+        languageLevel = '11'
     }
     module {
         //if you love browsing Javadoc
@@ -29,8 +29,8 @@ idea {
 
 subprojects {
     configurations.all {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     apply plugin: 'java'
