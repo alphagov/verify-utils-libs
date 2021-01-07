@@ -3,7 +3,7 @@ package uk.gov.ida.filters;
 import org.junit.Before;
 import org.junit.Test;
 import javax.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.HttpHeaders;
 
 import java.util.ArrayList;
 import java.util.Collections;

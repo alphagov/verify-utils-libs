@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import org.glassfish.jersey.server.ContainerRequest;
 
 import javax.inject.Named;
-import jakarta.ws.rs.client.Client;
+import javax.ws.rs.client.Client;
 import java.net.URI;
 
 public class PiwikClient {
