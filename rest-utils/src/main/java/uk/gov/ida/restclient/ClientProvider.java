@@ -9,7 +9,7 @@ import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import uk.gov.ida.configuration.JerseyClientWithRetryBackoffConfiguration;
 
 import javax.inject.Provider;
-import jakarta.ws.rs.client.Client;
+import javax.ws.rs.client.Client;
 import java.net.ProxySelector;
 
 public class ClientProvider implements Provider<Client> {
@@ -27,7 +27,7 @@ public class ClientProvider implements Provider<Client> {
                 .using(getHttpRequestRetryHandler(jerseyClientConfiguration, enableRetryTimeOutConnections))
                 .using(new SystemDefaultRoutePlanner(ProxySelector.getDefault()));
 
-        client = (Client) jerseyClientBuilder.build(clientName);
+        client = jerseyClientBuilder.build(clientName);
     }
 
     public ClientProvider(
@@ -41,7 +41,7 @@ public class ClientProvider implements Provider<Client> {
                 .using(getHttpRequestRetryHandler(jerseyClientConfiguration, enableRetryTimeOutConnections))
                 .using(new SystemDefaultRoutePlanner(ProxySelector.getDefault()));
 
-        client = (Client) jerseyClientBuilder.build(clientName);
+        client = jerseyClientBuilder.build(clientName);
     }
 
     private HttpRequestRetryHandler getHttpRequestRetryHandler(JerseyClientConfiguration jerseyClientConfiguration, boolean enableRetryTimeOutConnections) {

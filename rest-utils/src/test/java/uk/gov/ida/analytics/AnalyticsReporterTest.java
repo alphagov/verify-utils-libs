@@ -22,7 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ida.configuration.AnalyticsConfiguration;
 import uk.gov.ida.configuration.AnalyticsConfigurationBuilder;
 
-import jakarta.ws.rs.core.Cookie;
+import javax.ws.rs.core.Cookie;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
