@@ -13,20 +13,37 @@ dependencies {
             'javax.xml.bind:jaxb-api:2.3.1'
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_API_KEY')
-    publications = ['mavenJava']
-    publish = true
-    pkg {
-        repo = 'maven-test'
-        name = 'ida-security-utils'
-        userOrg = 'alphagov'
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/alphagov/verify-utils-libs.git'
-        version {
-            name = "$build_version"
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = 'Security utilities'
+                packaging = 'jar'
+                description = 'Library for performing common Security utilities'
+                url = 'https://github.com/alphagov/verify-utils-libs'
+                artifactId = 'ida-security-utils'
+
+                scm {
+                    url = 'https://github.com/alphagov/verify-utils-libs'
+                    connection = 'scm:git:git://github.com/alphagov/verify-utils-libs.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:alphagov/verify-utils-libs.git'
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT Licence'
+                        url = 'https://github.com/alphagov/verify-utils-libs/blob/master/LICENCE'
+                        distribution = 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        name = 'GDS Developers'
+                    }
+                }
+            }
         }
     }
 }
-
