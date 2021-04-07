@@ -19,7 +19,7 @@ public class TrustStoreMetrics {
 
     /**
      * Initialises the TrustStoreMetrics gauge with a reference to a different gauge
-     * @param gauge
+     * @param gauge the prometheus gauge for expiryDate
      */
     public TrustStoreMetrics(Gauge gauge) {
         expiryDateGauge = gauge;
@@ -28,7 +28,6 @@ public class TrustStoreMetrics {
     /**
      * Create a new TrustStoreMetrics.  This will automatically register metrics with the default Prometheus
      * CollectorRegistry.
-     * @param gaugeName
      *  The name of the Prometheus Label to be used
      */
     public TrustStoreMetrics() {

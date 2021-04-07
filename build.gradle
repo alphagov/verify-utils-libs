@@ -39,6 +39,11 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'maven-publish'
 
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
     ext {
       build_version = "2.0.0-${System.env.BUILD_NUMBER ?: 'SNAPSHOT'}"
     }
