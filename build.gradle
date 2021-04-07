@@ -1,12 +1,16 @@
 plugins {
-      id "org.sonarqube" version "2.6.1"
+    id "org.sonarqube" version "2.6.1"
+    id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
 }
 
-apply plugin: 'idea'
-apply plugin: 'java'
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
 
 allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
     apply plugin: 'jacoco'
+    apply plugin: 'signing'
+    apply plugin: 'maven-publish'
 }
 
 repositories {
@@ -27,22 +31,41 @@ idea {
     }
 }
 
+group = "uk.gov.ida"
+ext {
+    build_version = "2.0.0-${System.env.BUILD_NUMBER ?: 'SNAPSHOT'}"
+}
+version = "$build_version"
+
+nexusPublishing {
+    useStaging = true
+    repositories {
+        sonatype {
+            // because we registered in Sonatype after 24 Feb 2021, we provide these URIs
+            // see: https://github.com/gradle-nexus/publish-plugin/blob/master/README.md
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username = System.getenv("SONATYPE_USERNAME")
+            password = System.getenv("SONATYPE_PASSWORD")
+        }
+    }
+}
+
 subprojects {
     configurations.all {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'maven-publish'
-
     ext {
-      build_version = "2.0.0-${System.env.BUILD_NUMBER ?: 'SNAPSHOT'}"
+        build_version = "2.0.0-${System.env.BUILD_NUMBER ?: 'SNAPSHOT'}"
     }
-    group = "uk.gov.ida"
     version = "$build_version"
 
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
 
     repositories {
         if (System.getenv('VERIFY_USE_PUBLIC_BINARIES') == 'true') {
@@ -67,12 +90,44 @@ subprojects {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
+                groupId = 'uk.gov.ida'
+                pom {
+                    name = project.name
+                    packaging = 'jar'
+                    description = 'Library for ' + project.name
+                    url = 'https://github.com/alphagov/verify-utils-libs'
+                    artifactId = project.name
 
-                artifact sourceJar {
-                    classifier "sources"
-                }
+                    scm {
+                        url = 'https://github.com/alphagov/verify-utils-libs'
+                        connection = 'scm:git:git://github.com/alphagov/verify-utils-libs.git'
+                        developerConnection = 'scm:git:ssh://git@github.com:alphagov/verify-utils-libs.git'
+                    }
+
+                    licenses {
+                        license {
+                            name = 'MIT Licence'
+                            url = 'https://github.com/alphagov/verify-utils-libs/blob/master/LICENCE'
+                            distribution = 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            name = 'GDS Developers'
+                        }
+                    }
+                } // pom
             }
         }
+    }
+
+    signing {
+        useInMemoryPgpKeys(
+                System.getenv("MAVEN_CENTRAL_SIGNING_KEY"),
+                System.getenv("MAVEN_CENTRAL_SIGNING_KEY_PASSWORD")
+        )
+        sign publishing.publications
     }
 }
 
