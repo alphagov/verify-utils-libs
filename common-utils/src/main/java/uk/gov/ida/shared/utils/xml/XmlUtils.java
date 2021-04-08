@@ -27,7 +27,7 @@ import static javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING;
  * {@link javax.xml.parsers.DocumentBuilderFactory} should *only* be used via
  * the utility methods in this class.  For more information on the vulnerabilities
  * identified, see the tests.
- * @see uk.gov.ida.shared.utils.xml.XmlUtilsTest
+// * @see uk.gov.ida.shared.utils.xml.XmlUtilsTest
  */
 public abstract class XmlUtils {
     private static final String FEATURE_DISALLOW_DOCTYPE_DECLARATIONS =
@@ -61,6 +61,8 @@ public abstract class XmlUtils {
 
     /**
      * @return a namespace-aware document builder
+     * @throws ParserConfigurationException
+     *  Throws a ParserConfigurationException
      */
     public static DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

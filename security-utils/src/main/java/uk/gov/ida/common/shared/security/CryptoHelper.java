@@ -18,17 +18,17 @@ import static java.text.MessageFormat.format;
 /**
  * The initial purpose of this code was to obfuscate cookies in Frontend.
  * It has not been audited by a cryptographer.
- * <p/>
+ *
  * The length of data it will encrypt is PADDED_LENGTH bytes and
  * that should be changed/paramaterised if this code is reused.  The data
  * that is encrypted is padded to PADDED_LENGTH so the length of the
  * resulting encrypted data does not allow anyone to draw inferences about
  * the unencrypted data.
- * <p/>
+ *
  * For QA purposes it may be helpful to decrypt data encoded by this class on the
  * command line.  This can be achieved using the following command:
- * `echo "cookievalue" | base64 -D | openssl enc -d -aes-128-cbc -K <keyinhex> -iv 0000000000000000`
- * <p/>
+ * `echo "cookievalue" | base64 -D | openssl enc -d -aes-128-cbc -K keyinhex -iv 0000000000000000`
+ *
  * It is not possible to encrypt a string terminated with padding nulls on the command line
  * as the shell removes them.  A Ruby script that can encrypt (and decrypt) these cookie
  * values is in ida-utils/tools/cookie-crypto.rb
@@ -54,6 +54,8 @@ public class CryptoHelper {
 
     /**
      * This helper is intended to obfuscate cookies relating to relying parties
+     * @param base64EncodedAesKey
+     *  A base64 encoded key
      */
     public CryptoHelper(String base64EncodedAesKey) {
         byte[] bytes = unBase64(base64EncodedAesKey);
