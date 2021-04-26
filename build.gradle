@@ -3,8 +3,6 @@ plugins {
     id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
 }
 
-apply plugin: 'io.github.gradle-nexus.publish-plugin'
-
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
@@ -14,7 +12,7 @@ allprojects {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 idea {
@@ -70,11 +68,7 @@ subprojects {
     repositories {
         if (System.getenv('VERIFY_USE_PUBLIC_BINARIES') == 'true') {
             logger.warn('Production builds MUST NOT be built with public binaries.\nUse artifactory/allowed-repos for production builds.\n\n')
-
-            maven { url  "https://dl.bintray.com/alphagov/maven"      } // For dropwizard-logstash
-            maven { url  "https://dl.bintray.com/alphagov/maven-test" } // For other public verify binaries
-
-            jcenter()
+            mavenCentral()
         }
         else {
             maven { url 'https://gds.jfrog.io/artifactory/allowed-repos' }
