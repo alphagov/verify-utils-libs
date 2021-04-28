@@ -17,8 +17,10 @@ repositories {
 
 idea {
     project {
-        jdkName = '11'
-        languageLevel = '11'
+        // These are set to provide compatibility with the MSA and the VSP which need to stay on Java8 for services.
+        // Please don't bump unless we've agreed to release the MSA and VSP with a later version.
+        jdkName = '8'
+        languageLevel = '8'
     }
     module {
         //if you love browsing Javadoc
@@ -51,8 +53,10 @@ nexusPublishing {
 
 subprojects {
     configurations.all {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        // These are set to provide compatibility with the MSA and the VSP which need to stay on Java8 for services.
+        // Please don't bump unless we've agreed to release the MSA and VSP with a later version.
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     ext {
