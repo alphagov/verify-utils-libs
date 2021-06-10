@@ -1,7 +1,7 @@
 package uk.gov.ida.common.shared.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.google.common.io.Resources;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,13 +50,13 @@ public class X509CertificateConfigurationTest {
 
     @Test
     public void should_ThrowExceptionWhenStringDoesNotContainAPublicKey() throws Exception {
-        thrown.expect(InvalidDefinitionException.class);
+        thrown.expect(ValueInstantiationException.class);
         thrown.expectMessage("Unable to load certificate");
         String encodedKey = Base64.getEncoder().encodeToString("not-a-fullCertificate".getBytes());
         objectMapper.readValue("{\"type\": \"x509\", \"cert\": \"" + encodedKey + "\", \"name\": \"someId\"}", DeserializablePublicKeyConfiguration.class);
     }
 
-    @Test(expected = InvalidDefinitionException.class)
+    @Test(expected = ValueInstantiationException.class)
     public void should_ThrowExceptionWhenIncorrectKeySpecified() throws Exception {
         String path = getClass().getClassLoader().getResource("empty_file").getPath();
         String jsonConfig = "{\"type\": \"x509\", \"certFoo\": \"" + path + "\", \"name\": \"someId\"}";
