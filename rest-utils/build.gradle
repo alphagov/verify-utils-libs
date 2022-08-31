@@ -1,6 +1,6 @@
 dependencies {
     def dependencyVersions = [
-            dropwizardVersion:"2.0.21"
+            dropwizardVersion:"2.1.1"
     ]
 
     testCompile "junit:junit:4.13.2",
