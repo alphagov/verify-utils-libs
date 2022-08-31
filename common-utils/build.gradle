@@ -9,7 +9,7 @@ dependencies {
             'org.slf4j:slf4j-api:1.7.10',
             'joda-time:joda-time:2.7',
             'org.yaml:snakeyaml:1.12',
-            'javax.validation:validation-api:1.1.0.Final',
+            'javax.validation:validation-api:2.0.1.Final',
             'io.dropwizard:dropwizard-logging:2.0.21',
             'io.dropwizard:dropwizard-configuration:2.0.21'
 }
