@@ -3,18 +3,10 @@ language: java
 env:
   global:
     - VERIFY_USE_PUBLIC_BINARIES=true
-    # GITHUB_PAT
-    - secure: "CwesnXzTCl5UxsCAfmQviTXRFPi2TwPJsxQISf1Iotxe26b4lzAzVa/aTYuW4dy6y3nqyafCZ5EckoU5i8ICYB5+aYZ+/1tn027jGpOVtnWSj3IRF8C0ZV5WIGlzg76Q35FZGoVKFb2XIPyD9MFKsLGAeWU8xDQf6g9YYEY5yrmGQvYUkYWNvWh7uLnCAalfsKK4zvxO4HdZA793b3XgZ6sWk1l0XL6bYHXlCPdKL9DLo/FBozRRXqMD2Agfgb8uyJu7W3kDGI1lTHfBaNCHX6xDVbd0XCOB5Le28MBJTYZk+CqvNlOYdgL7oJIra9M0k9unJFCWcKipQBEHrJygBQMXKEblbRgoJlVnoG1VVdXTyBPKGZmf2Ghf3i6X/TV00HXE7ky/8XvdozFBPFoEV2T4ymWm8GbgN9K+oWv614TvhShO1khq5F+tjLc9sbgYXVaXn61YNWp/hFiOBldK6dZwTADQCt6TYsIMRuF4i6EgrBzs3d/LYYVSMhjtmuhN927ERxvcCrRNsuazJE2FqNGlab5um+NU/p2NmBL/mElzJ3+TIlTiFaW4RiblYC7d8giCjY/9dtRDA7i3KpXs1ppA0vyKTk2C6Pz1Fz5UBMlzCdgcGKTr/lol7B/mdacwqqLor6XmCd83sJXm31vmfS0kCvqdtoQob+nfTONglQM="
-    # CODACY_PROJECT_TOKEN
-    - secure: "KwAinH4pO4zNuSgy0Hkb7eGs46zkd5YjpNoeb8rAckDhHY9MFDpSbmpdnAoQ066SyzDpSVNAAzYDel2RF8MkgId77bZvl6J7Y0Jyr1I4rA4q4xEkYLESZwoVOl0vSzH30rYUxojJHm/L63S6jp4dxkWBXLBL2vpAGr3qXIhQu45RLde4Mn89iaSMJgsdNea5+fb/S7CZJftI0MzYxp3Gszu3Y0gtmbyr0h4/g8TbKDmPXyNmYprMhARpbwAh67O8O30d6EioJvXlWLCP8dooELxcYuL6e5KrTmCpCNiAsNkeZGipxqRY3bL5QKVcoXFGFVur0/OAtsPbLP3sSPUVd5okW3U00ohKOJ6N7A3C0tLZkGYzb/OqkCmAzyYc9cRC/OlTlNVS1tNDnO6cEMmonmwlGL/XR8oUInQwiF4dvw8gxnHg8+Lyr7bW1n5ohI146ewOVAShDPpnooR+Or6EbrvMjtlo0Ot5uyOFNgVnTtvvMEU3dQUgSTHnGIDohdZb6VVQ1VfOeaFNcGJbHLwyxx/IfkV+MSA/8CCz6ZdD6QxcZr88z7NgsvrDL+SdWWTLoAIbzOOHt6vJsXUhYVYy75Tuo+7c+X2jFDkoQOO5T0QRQXpPEL2+DXVrbbViduBoN7Q0uAJzsceDZsDGTHe2EBS08HVxLBBGJapCnDeSikI="
 
 jdk:
   - openjdk8
   - openjdk11
-
-before_install:
-  - sudo apt-get install jq
-  - curl -u ida-codacy-bot:$GITHUB_PAT -LSs $(curl -u ida-codacy-bot:$GITHUB_PAT -LSs https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("codacy-coverage-reporter-assembly")).browser_download_url') -o codacy-coverage-reporter-assembly.jar
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -24,7 +16,3 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-
-after_success:
-  - "./gradlew jacocoRootReport"
-  - java -jar codacy-coverage-reporter-assembly.jar report -l Java -r build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
