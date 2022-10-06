@@ -8,7 +8,7 @@ dependencies {
             'commons-validator:commons-validator:1.7',
             'org.slf4j:slf4j-api:1.7.10',
             'joda-time:joda-time:2.7',
-            'org.yaml:snakeyaml:1.31',
+            'org.yaml:snakeyaml:1.33',
             'javax.validation:validation-api:2.0.1.Final',
             'io.dropwizard:dropwizard-logging:2.1.2',
             'io.dropwizard:dropwizard-configuration:2.1.2'
