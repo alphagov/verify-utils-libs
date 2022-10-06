@@ -5,7 +5,7 @@ dependencies {
 
     compile 'com.google.guava:guava:23.0',
             'commons-codec:commons-codec:1.15',
-            'commons-validator:commons-validator:1.6',
+            'commons-validator:commons-validator:1.7',
             'org.slf4j:slf4j-api:1.7.10',
             'joda-time:joda-time:2.7',
             'org.yaml:snakeyaml:1.31',
