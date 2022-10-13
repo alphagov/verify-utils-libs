@@ -11,6 +11,6 @@ dependencies {
             'org.yaml:snakeyaml:1.33',
             'javax.validation:validation-api:2.0.1.Final',
             'io.dropwizard:dropwizard-logging:2.1.2',
-            'io.dropwizard:dropwizard-configuration:2.1.2'
+            'io.dropwizard:dropwizard-configuration:2.1.3'
 }
 
