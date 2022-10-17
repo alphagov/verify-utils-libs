@@ -78,6 +78,8 @@ subprojects {
         }
     }
 
+    task allDeps(type: DependencyReportTask) {}
+
 
     task sourceJar(type: Jar) {
         from sourceSets.main.allJava
