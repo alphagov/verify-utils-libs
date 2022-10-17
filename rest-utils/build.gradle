@@ -9,7 +9,7 @@ dependencies {
             "com.github.tomakehurst:wiremock:2.16.0",
             "io.dropwizard:dropwizard-testing:$dependencyVersions.dropwizardVersion"
 
-    compile "javax.inject:javax.inject:1",
+    compile "javax.inject:javax.inject:1.0-PFD-1",
             "javax.servlet:javax.servlet-api:4.0.1",
             "io.dropwizard:dropwizard-core:$dependencyVersions.dropwizardVersion",
             "io.dropwizard:dropwizard-client:$dependencyVersions.dropwizardVersion",
