@@ -1,5 +1,9 @@
 # Verify Utils Libraries
 
+> **Verify has Closed**
+>
+>This repository is out of date and has been archived
+
 Libraries for performing various utility operations within Verify. These include:
 
 * Miscellaneous common utilities
